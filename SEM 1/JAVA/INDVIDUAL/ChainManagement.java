@@ -105,36 +105,43 @@ class ChainManagement
         }
     }
 
-    void placeOrder(ChainManagement[] orders,ChainManagement[] products,int m)
-    {
-        System.out.println("Enter name of that product to make order");
-        String s1=sc.nextLine();
-        boolean t=false;
-        for(int i=0;i< m;i++)
-        {
-            if(products!=null)
-            {
-                if (products[i].name.compareToIgnoreCase(s1) == 0)
-                {
+    void placeOrder(ChainManagement[] orders, ChainManagement[] products, int m) {
+    System.out.println("Enter name of the product to make an order");
+    String s1 = sc.nextLine();
+    boolean productFound = false;
 
-                    orders[n].name = s1;
-                    System.out.println("Enter number of items of that product");
-                    int n1 = sc.nextInt();
-                    sc.nextLine();
-                    System.out.println("Enter date by which it must be delivered");
-                    orders[n].date = sc.nextLine();
-                    orders[n].totalItem = n1;
-                    products[i].totalItem -= n1;
-                    n++;
-                    t = true;
-                }
+    for (int i = 0; i < m; i++) {
+        if (products[i] != null && products[i].name.compareToIgnoreCase(s1) == 0) {
+            productFound = true;
+            
+            System.out.println("Enter number of items of that product");
+            int n1 = sc.nextInt();
+            sc.nextLine();
+
+            if (n1 > products[i].totalItem) {
+                System.out.println("Error: Not enough stock available! Available stock: " + products[i].totalItem);
+                return;
             }
-        }
-        if(!t)
-        {
-            System.out.println("Product not found");
+
+            System.out.println("Enter date by which it must be delivered");
+            orders[n] = new ChainManagement();
+            orders[n].name = s1;
+            orders[n].date = sc.nextLine();
+            orders[n].totalItem = n1;
+
+            // Deduct stock only if order is successfully placed
+            products[i].totalItem -= n1;
+            n++;
+            System.out.println("Order placed successfully!");
+            return;
         }
     }
+
+    if (!productFound) {
+        System.out.println("Product not found");
+    }
+}
+
 
     void displayProduct(ChainManagement[] products,int m)
     {
